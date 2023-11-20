@@ -2,10 +2,10 @@
     "name": "cpp-builder-launcher-extension",
     "displayName": "C/C++ Builder and Launcher",
     "version": "1.0.0",
-    "publisher": "RhaymTech",
+    "publisher": "Ghellab Abderrahmane (Rhaym)",
     "description": "An extension for building and launching C/C++ programs (Depends on C/C++ Extension Pack)",
     "main": "out/extension.js",
-    "icon": "./icon.png",
+    "icon": "icon.png",
     "categories": [
         "Programming Languages"
     ],
