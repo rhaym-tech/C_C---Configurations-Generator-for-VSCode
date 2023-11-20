@@ -1,4 +1,5 @@
-# <img src="./icon.png" style="max-width: 20px"> C/C++ Builder and Launcher Extension 
+# C/C++ Builder and Launcher Extension
+
 ### Before we start:
 This Extension works on Windows ONLY, other OS will be supported soon!
 ## Overview
