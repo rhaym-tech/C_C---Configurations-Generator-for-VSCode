@@ -18,13 +18,9 @@ function isCppOrCFile(document: vscode.TextDocument): boolean {
 }
 
 function generateCppConfigs() {
-  const filePath = 'C:\\MinGW\\bin\\launcher.exe';
-
-  // Check if the file exists
-  fs.promises.access(filePath, fs.constants.F_OK).then(() => {
-      // File exists
-    console.log('File exists')
-
+  const filePath = path.win32.join("C:", "MinGW", "bin", "launcher.exe");
+  if(fs.existsSync(filePath)) { // File exists
+      
     const tasksConfig = {
       tasks: [
         {
@@ -72,28 +68,28 @@ function generateCppConfigs() {
       ]
     };
 
-    const workspacePath = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].name: undefined;
+    const workspacePath = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
 
     if (workspacePath) {
-      const tasksPath = path.join(workspacePath, '.vscode', 'tasks.json');
-      const launchPath = path.join(workspacePath, '.vscode', 'launch.json');
 
-      if (!fs.existsSync(tasksPath)) {
-        fs.writeFileSync(tasksPath, JSON.stringify(tasksConfig, null, 2));
-      }
+      const configsPath = path.win32.join(workspacePath, ".vscode");
 
-      if (!fs.existsSync(launchPath)) {
-        fs.writeFileSync(launchPath, JSON.stringify(launchConfig, null, 2));
-      }
+      if(!fs.existsSync(configsPath)) fs.mkdir(configsPath, {recursive: true}, (err) => {});
 
+      const tasksPath = path.win32.join(workspacePath, '.vscode', 'tasks.json');
+      const launchPath = path.win32.join(workspacePath, '.vscode', 'launch.json');
+
+      fs.writeFile(tasksPath, JSON.stringify(tasksConfig, null, 2), (err) => {});
+      fs.writeFile(launchPath, JSON.stringify(launchConfig, null, 2), (err) => {});
       vscode.window.showInformationMessage('C/C++ configurations generated successfully!');
+
     } else {
-      vscode.window.showErrorMessage('Cannot find workspace root path.');
+      vscode.window.showErrorMessage('Cannot find workspace root path, please open a folder to work in');
     }
-  }).catch(() => {
+  } else {
     // File doesn't exist, prompt user with two options
     vscode.window.showInformationMessage(
-      'The required launcher.exe file is not found. What would you like to do?',
+      'The required launcher.exe file which Rhaym made to launch C/C++ Programs perfectly is not found. What would you like to do?',
       { modal: true },
       'Download now',
       'Abort'
@@ -148,26 +144,24 @@ function generateCppConfigs() {
             }
           ]
         };
-        const workspacePath = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].name: undefined;
+        const workspacePath = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
         if (workspacePath) {
-          const tasksPath = path.join(workspacePath, '.vscode', 'tasks.json');
-          const launchPath = path.join(workspacePath, '.vscode', 'launch.json');
-    
-          if (!fs.existsSync(tasksPath)) {
-            fs.writeFileSync(tasksPath, JSON.stringify(tasksConfig, null, 2));
-          }
-    
-          if (!fs.existsSync(launchPath)) {
-            fs.writeFileSync(launchPath, JSON.stringify(launchConfig, null, 2));
-          }
-    
+          const configsPath = path.win32.join(workspacePath, ".vscode");
+
+          if(!fs.existsSync(configsPath)) fs.mkdir(configsPath, {recursive: true}, (err) => {});
+
+          const tasksPath = path.win32.join(workspacePath, '.vscode', 'tasks.json');
+          const launchPath = path.win32.join(workspacePath, '.vscode', 'launch.json');
+          fs.writeFile(tasksPath, JSON.stringify(tasksConfig, null, 2), (err) => {});
+          fs.writeFile(launchPath, JSON.stringify(launchConfig, null, 2), (err) => {});
+
           vscode.window.showInformationMessage('C/C++ configurations generated successfully!');
         } else {
-          vscode.window.showErrorMessage('Cannot find workspace root path.');
+          vscode.window.showErrorMessage('Cannot find workspace root path, please open VSCode in a folder to work');
         }
       }
     });
-  });
+  };
 }
 
 export function deactivate() { }
