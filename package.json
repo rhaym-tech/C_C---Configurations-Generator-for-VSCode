@@ -5,9 +5,17 @@
     "publisher": "RhaymTech",
     "description": "An extension for building and launching C/C++ programs (Depends on C/C++ Extension Pack)",
     "main": "out/extension.js",
+    "icon": "./icon.png",
+    "categories": [
+        "Programming Languages"
+    ],
     "extensionDependencies":[
         "ms-vscode.cpptools"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rhaym-tech/C_Cpp-Configurations-Generator-for-VSCode.git"
+    },
     "activationEvents": [
         "onLanguage:cpp",
         "onLanguage:c",
